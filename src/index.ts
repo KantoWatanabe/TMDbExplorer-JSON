@@ -1,10 +1,12 @@
 import 'dotenv/config';
-import { fetchTrendingMovies } from './jobs/fetchTrendingMovies';
+import { generateBanners } from './jobs/generateBanners';
+import { generateRecommends } from './jobs/generateRecommends';
 
 async function runAll() {
   try {
     await Promise.all([
-      fetchTrendingMovies(),
+      generateBanners(),
+      generateRecommends(),
     ]);
     console.log('✅ All JSON updated!');
   } catch (err) {
