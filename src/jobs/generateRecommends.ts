@@ -1,3 +1,4 @@
+import { enrichResultsWithMediaType } from "../utils/enricher";
 import { fetchFromTMDb } from "../utils/fetcher";
 import { sleep } from "../utils/sleep";
 import { saveJson } from "../utils/writer";
@@ -40,8 +41,11 @@ export async function generateRecommends() {
   const recommends: RecommendItem[] = [];
   for (const endpoint of endpoints) {
     const data = await fetchFromTMDb(endpoint.url);
+
+    const enrichedResults = enrichResultsWithMediaType(data.results, endpoint.url);
+
     const filename = `home/${endpoint.key}.json`;
-    saveJson(filename, data);
+    saveJson(filename, { ...data, results: enrichedResults });
 
     recommends.push({
       title: endpoint.title,
